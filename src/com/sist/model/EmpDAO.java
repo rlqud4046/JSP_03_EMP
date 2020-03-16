@@ -66,5 +66,64 @@ public class EmpDAO {
 		}
 		return list;
 
-	}
+	} // 셀렉트 메서드의 끝
+
+	// DEPT 테이블의 전체 목록을 조회하는 메서드
+
+	public ArrayList<DeptDTO> dept() {
+		ArrayList<DeptDTO> list = new ArrayList<DeptDTO>();
+
+		try {
+			String sql = "select * from dept order by deptno";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				DeptDTO dto = new DeptDTO();
+				dto.setDeptno(rs.getInt("deptno"));
+				dto.setDname(rs.getString("dname"));
+				dto.setLoc(rs.getString("loc"));
+				list.add(dto);
+
+			}
+			// open된 객체 닫기
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	} // dept 메서드의 end
+	
+	// EMP 테이블에 레코드를 추가하는 메서드
+	public int insert(EmpDTO dto) {// 데이터 추가 변경 등은 반환형이 int
+		int result = 0;
+		
+		try {
+			String sql = "insert into emp values(?,?,?,?,sysdate,?,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, dto.getEmpno());
+			pstmt.setString(2, dto.getEname());
+			pstmt.setString(3, dto.getJob());
+			pstmt.setInt(4, dto.getMgr());
+			pstmt.setInt(5, dto.getSal());
+			pstmt.setInt(6, dto.getComm());
+			pstmt.setInt(7, dto.getDeptno());
+			
+			result = pstmt.executeUpdate();
+			
+			// open된 객체 닫기
+			pstmt.close(); con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+		
+	} // insert 메서드의 end
+
 }

@@ -59,7 +59,11 @@
 			%>
 
 		</table>
-
+		<br><br>
+		<hr width="500" color="blue">
+		<br>
+		<a href="<%=request.getContextPath()%>/insert">[레코드 추가]</a>
+		
 
 		
 
